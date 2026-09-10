@@ -1,113 +1,1060 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SRC — Software House &amp; IT Consulting</title>
-  <meta name="description" content="Software house dan konsultan IT Indonesia. Membangun solusi digital end-to-end, enterprise systems, dan cloud infrastructure.">
+  <title>SRC — Software Engineering &amp; Technology Consulting</title>
+  <meta name="description" content="SRC is an engineering studio and IT consultancy based in Indonesia, building high-resilience systems, cloud architecture, and mission-critical software.">
   <link rel="icon" type="image/svg+xml" href="https://raw.githubusercontent.com/src-id/assets/main/logo/logo-white.svg">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&display=swap">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
   <style>
     :root {
-      --bg: #0A0A0A;
-      --surface: #111111;
-      --border: #222222;
-      --text: #F5F5F5;
-      --muted: #666666;
-      --accent: #E8E8E8;
+      --bg: #070709;
+      --bg-surface: #0e0e12;
+      --bg-card: rgba(18, 18, 24, 0.7);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.22);
+      --text: #F4F4F5;
+      --text-muted: #8E8E98;
+      --text-sub: #5E5E68;
+      --accent: #3B82F6;
+      --accent-glow: rgba(59, 130, 246, 0.35);
+      --accent-emerald: #10B981;
     }
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      outline: none;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background: var(--bg);
+    }
+
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'DM Mono', monospace;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      padding: 48px 24px;
-      max-width: 720px;
-      margin: 0 auto;
+      overflow-x: hidden;
+      line-height: 1.5;
+      position: relative;
     }
-    header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 64px; }
-    .logo-mark { width: 36px; height: 36px; }
-    nav a { color: var(--muted); text-decoration: none; font-size: 12px; margin-left: 20px; transition: color .2s; }
-    nav a:hover { color: var(--text); }
-    .hero { margin-bottom: 64px; }
-    .hero h1 { font-size: 28px; font-weight: 400; line-height: 1.3; margin-bottom: 16px; letter-spacing: -0.02em; }
-    .hero p { color: var(--muted); font-size: 14px; line-height: 1.7; }
-    .services { margin-bottom: 64px; }
-    .label { font-size: 10px; letter-spacing: 0.3em; color: var(--muted); text-transform: uppercase; margin-bottom: 24px; }
-    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--border); border: 1px solid var(--border); }
-    .card { background: var(--bg); padding: 24px; }
-    .card-num { font-size: 11px; color: var(--muted); margin-bottom: 8px; }
-    .card-title { font-size: 13px; font-weight: 500; margin-bottom: 6px; }
-    .card-desc { font-size: 11px; color: var(--muted); line-height: 1.6; }
-    .cta { border: 1px solid var(--border); padding: 32px; text-align: center; margin-bottom: 64px; }
-    .cta p { font-size: 13px; color: var(--muted); margin-bottom: 16px; }
-    .cta a { display: inline-block; border: 1px solid var(--text); color: var(--text); padding: 8px 20px; font-size: 12px; text-decoration: none; transition: background .2s, color .2s; }
-    .cta a:hover { background: var(--text); color: var(--bg); }
-    footer { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); padding-top: 24px; border-top: 1px solid var(--border); }
-    footer a { color: var(--muted); text-decoration: none; }
-    footer a:hover { color: var(--text); }
-    @media (max-width: 480px) {
-      .grid { grid-template-columns: 1fr; }
-      body { padding: 32px 16px; }
+
+    /* Ambient Canvas */
+    #bg-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.65;
+    }
+
+    /* Radial Glow Spots */
+    .glow-spot {
+      position: fixed;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 0;
+      filter: blur(140px);
+      opacity: 0.12;
+      background: radial-gradient(circle, #3B82F6 0%, rgba(59, 130, 246, 0) 70%);
+      top: -150px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Navigation */
+    header {
+      padding: 32px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(7, 7, 9, 0.75);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      text-decoration: none;
+      color: var(--text);
+    }
+
+    .logo-container {
+      width: 38px;
+      height: 38px;
+      background: #111116;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .logo-container::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, rgba(59,130,246,0.25), transparent 70%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .brand:hover .logo-container {
+      border-color: var(--border-hover);
+      transform: translateY(-1px) scale(1.02);
+    }
+
+    .brand:hover .logo-container::after {
+      opacity: 1;
+    }
+
+    .logo-svg {
+      width: 22px;
+      height: 22px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .brand-text {
+      font-family: 'DM Mono', monospace;
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+    }
+
+    .brand-badge {
+      font-family: 'DM Mono', monospace;
+      font-size: 10px;
+      color: var(--text-sub);
+      background: rgba(255,255,255,0.04);
+      padding: 2px 7px;
+      border-radius: 4px;
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      transition: color 0.2s ease;
+      position: relative;
+    }
+
+    nav a:hover {
+      color: var(--text);
+    }
+
+    .btn-nav {
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      padding: 7px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-nav:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: var(--border-hover);
+      transform: translateY(-1px);
+    }
+
+    /* Hero */
+    .hero {
+      padding: 96px 0 64px;
+      position: relative;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      background: rgba(16, 185, 129, 0.07);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      border-radius: 999px;
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: #34D399;
+      margin-bottom: 28px;
+      animation: fadeIn 0.8s ease backwards;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--accent-emerald);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--accent-emerald);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.85); }
+    }
+
+    .hero-title {
+      font-size: clamp(38px, 6vw, 68px);
+      font-weight: 700;
+      line-height: 1.08;
+      letter-spacing: -0.035em;
+      margin-bottom: 24px;
+      max-width: 860px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(135deg, #FFFFFF 40%, #A1A1AA 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(16px, 2vw, 19px);
+      color: var(--text-muted);
+      line-height: 1.65;
+      max-width: 640px;
+      margin-bottom: 40px;
+      font-weight: 300;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 72px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 28px;
+      background: #FFFFFF;
+      color: #070709;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 0 24px rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 30px rgba(255, 255, 255, 0.25);
+      background: #F4F4F5;
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 13px 24px;
+      background: rgba(255, 255, 255, 0.03);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.25s ease;
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.07);
+      border-color: var(--border-hover);
+      transform: translateY(-2px);
+    }
+
+    /* Live Monogram Interactive Showpiece */
+    .hero-display {
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: linear-gradient(180deg, rgba(20,20,26,0.6) 0%, rgba(10,10,14,0.8) 100%);
+      padding: 40px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      gap: 32px;
+      backdrop-filter: blur(16px);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 96px;
+    }
+
+    .hero-display::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    }
+
+    .terminal-snippet {
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      line-height: 1.8;
+      color: var(--text-muted);
+    }
+
+    .terminal-row {
+      display: flex;
+      gap: 16px;
+    }
+
+    .terminal-label {
+      color: var(--text-sub);
+      min-width: 140px;
+    }
+
+    .terminal-val {
+      color: var(--text);
+    }
+
+    .terminal-val.highlight {
+      color: #60A5FA;
+    }
+
+    .interactive-mark-wrapper {
+      position: relative;
+      width: 160px;
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%);
+    }
+
+    .svg-animated-mark {
+      width: 130px;
+      height: 130px;
+      filter: drop-shadow(0 0 16px rgba(255, 255, 255, 0.1));
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .hero-display:hover .svg-animated-mark {
+      transform: rotate(3deg) scale(1.05);
+      filter: drop-shadow(0 0 24px rgba(59, 130, 246, 0.3));
+    }
+
+    /* Capabilities / Services */
+    .section-header {
+      margin-bottom: 40px;
+    }
+
+    .section-eyebrow {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-eyebrow::before {
+      content: '';
+      width: 16px;
+      height: 1px;
+      background: var(--accent);
+    }
+
+    .section-title {
+      font-size: clamp(26px, 3.5vw, 36px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+      margin-bottom: 96px;
+    }
+
+    .service-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 36px;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      backdrop-filter: blur(10px);
+    }
+
+    .service-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 12px;
+      padding: 1px;
+      background: radial-gradient(600px circle at var(--mouse-x, 0) var(--mouse-y, 0), rgba(255,255,255,0.18), transparent 40%);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .service-card:hover {
+      border-color: rgba(255, 255, 255, 0.16);
+      transform: translateY(-4px);
+    }
+
+    .service-card:hover::after {
+      opacity: 1;
+    }
+
+    .card-index {
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      color: var(--text-sub);
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .card-tag {
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .service-card h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      letter-spacing: -0.01em;
+    }
+
+    .service-card p {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    /* Infinite Marquee */
+    .marquee-container {
+      margin-bottom: 96px;
+      overflow: hidden;
+      position: relative;
+      padding: 24px 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .marquee-container::before,
+    .marquee-container::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 120px;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .marquee-container::before {
+      left: 0;
+      background: linear-gradient(90deg, var(--bg) 0%, transparent 100%);
+    }
+
+    .marquee-container::after {
+      right: 0;
+      background: linear-gradient(270deg, var(--bg) 0%, transparent 100%);
+    }
+
+    .marquee-track {
+      display: flex;
+      gap: 48px;
+      width: max-content;
+      animation: marqueeScroll 28s linear infinite;
+    }
+
+    @keyframes marqueeScroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .tech-pill {
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: color 0.2s ease;
+    }
+
+    .tech-pill:hover {
+      color: var(--text);
+    }
+
+    .tech-bullet {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--text-sub);
+    }
+
+    /* Engineering Principles */
+    .principles-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 96px;
+    }
+
+    .principle-item {
+      padding: 28px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: rgba(14, 14, 18, 0.4);
+    }
+
+    .principle-item h4 {
+      font-family: 'DM Mono', monospace;
+      font-size: 14px;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .principle-item p {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* CTA Section */
+    .cta-banner {
+      background: linear-gradient(135deg, rgba(20,20,30,0.8) 0%, rgba(10,10,16,0.9) 100%);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 16px;
+      padding: 64px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 96px;
+    }
+
+    .cta-banner::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 400px;
+      height: 250px;
+      background: radial-gradient(circle, rgba(59,130,246,0.15) 0%, transparent 70%);
+      transform: translate(-50%, -50%);
+      filter: blur(60px);
+      pointer-events: none;
+    }
+
+    .cta-title {
+      font-size: clamp(24px, 3.5vw, 36px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .cta-desc {
+      color: var(--text-muted);
+      font-size: 15px;
+      max-width: 520px;
+      margin: 0 auto 32px;
+      line-height: 1.6;
+      position: relative;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 48px 0 64px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 24px;
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      color: var(--text-sub);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--text);
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .cards-grid, .principles-grid {
+        grid-template-columns: 1fr;
+      }
+      .hero-display {
+        grid-template-columns: 1fr;
+        padding: 28px;
+      }
+      .interactive-mark-wrapper {
+        margin: 0 auto;
+      }
+      header {
+        padding: 20px 0;
+      }
+      nav a:not(.btn-nav) {
+        display: none;
+      }
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <img class="logo-mark" src="https://raw.githubusercontent.com/src-id/assets/main/logo/logo-white.svg" alt="SRC">
-    <nav>
-      <a href="https://github.com/src-id" target="_blank">GitHub</a>
-      <a href="https://github.com/src-id/assets" target="_blank">Assets</a>
-    </nav>
-  </header>
+  <!-- Ambient Dynamic Canvas -->
+  <canvas id="bg-canvas"></canvas>
+  <div class="glow-spot"></div>
 
-  <main>
-    <div class="hero">
-      <h1>Software House &amp;<br>IT Consulting.</h1>
-      <p>Membangun sistem digital yang presisi, scalable, dan terukur untuk bisnis Indonesia. Dari arsitektur hingga produksi.</p>
-    </div>
+  <div class="container">
 
-    <div class="services">
-      <div class="label">Layanan</div>
-      <div class="grid">
-        <div class="card">
-          <div class="card-num">01</div>
-          <div class="card-title">Custom Software</div>
-          <div class="card-desc">Web app, sistem internal, dan otomasi bisnis sesuai kebutuhan spesifik.</div>
+    <!-- Header Navigation -->
+    <header>
+      <a href="#" class="brand">
+        <div class="logo-container">
+          <svg class="logo-svg" viewBox="0 0 550 550" xmlns="http://www.w3.org/2000/svg">
+            <g transform="matrix(1, 0, 0, 1, 25, 25)">
+              <rect width="250" height="250" style="stroke: #FFFFFF; paint-order: fill; stroke-linecap: round; stroke-linejoin: round; fill: none; stroke-width: 50px;" x="250"/>
+              <rect width="250" height="250" style="stroke: #FFFFFF; paint-order: fill; stroke-linecap: round; stroke-linejoin: round; fill: none; stroke-width: 50px;" y="250"/>
+              <line style="stroke: #FFFFFF; paint-order: fill; stroke-linecap: round; stroke-linejoin: round; fill: none; stroke-width: 50px;" x1="250" y1="250" x2="500" y2="500"/>
+            </g>
+          </svg>
         </div>
-        <div class="card">
-          <div class="card-num">02</div>
-          <div class="card-title">IT Consulting</div>
-          <div class="card-desc">Audit arsitektur, pemilihan tech stack, dan perencanaan sistem jangka panjang.</div>
+        <span class="brand-text">SRC</span>
+        <span class="brand-badge">ID</span>
+      </a>
+
+      <nav>
+        <a href="#capabilities">Capabilities</a>
+        <a href="#standards">Standards</a>
+        <a href="https://github.com/src-id/assets" target="_blank">Brand Assets</a>
+        <a href="https://github.com/src-id" target="_blank" class="btn-nav">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+          </svg>
+          GitHub
+        </a>
+      </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="status-pill">
+        <span class="status-dot"></span>
+        <span>OPEN FOR SELECT ADVISORY &amp; BUILD ENGAGEMENTS</span>
+      </div>
+
+      <h1 class="hero-title">
+        Engineering software with <span class="gradient-text">uncompromising precision.</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        We architect resilient backends, scalable cloud platforms, and mission-critical digital systems for enterprises and ambitious technology ventures.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#contact" class="btn-primary">
+          Start a Project
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+        <a href="https://github.com/src-id" target="_blank" class="btn-secondary">
+          Explore Repositories &rarr;
+        </a>
+      </div>
+
+      <!-- Interactive Monogram & Live Telemetry -->
+      <div class="hero-display reveal">
+        <div class="terminal-snippet">
+          <div class="terminal-row">
+            <span class="terminal-label">LOCATION</span>
+            <span class="terminal-val">Indonesia • UTC+07:00</span>
+          </div>
+          <div class="terminal-row">
+            <span class="terminal-label">DISCIPLINE</span>
+            <span class="terminal-val">Software Engineering &amp; IT Consulting</span>
+          </div>
+          <div class="terminal-row">
+            <span class="terminal-label">SPECIALTY</span>
+            <span class="terminal-val highlight">Distributed Systems, Cloud &amp; High-load Architecture</span>
+          </div>
+          <div class="terminal-row">
+            <span class="terminal-label">UPTIME TARGET</span>
+            <span class="terminal-val">99.99% Operational Reliability</span>
+          </div>
+          <div class="terminal-row">
+            <span class="terminal-label">STATUS</span>
+            <span class="terminal-val" style="color: #34D399;">● Systems Active</span>
+          </div>
         </div>
-        <div class="card">
-          <div class="card-num">03</div>
-          <div class="card-title">Cloud &amp; DevOps</div>
-          <div class="card-desc">Infrastruktur cloud, containerization, dan pipeline CI/CD yang stabil.</div>
+
+        <div class="interactive-mark-wrapper">
+          <svg class="svg-animated-mark" viewBox="0 0 550 550" xmlns="http://www.w3.org/2000/svg">
+            <g transform="matrix(1, 0, 0, 1, 25, 25)">
+              <rect width="250" height="250" style="stroke: #FFFFFF; stroke-linecap: round; stroke-linejoin: round; fill: none; stroke-width: 50px;" x="250"/>
+              <rect width="250" height="250" style="stroke: #FFFFFF; stroke-linecap: round; stroke-linejoin: round; fill: none; stroke-width: 50px;" y="250"/>
+              <line style="stroke: #FFFFFF; stroke-linecap: round; stroke-linejoin: round; fill: none; stroke-width: 50px;" x1="250" y1="250" x2="500" y2="500"/>
+            </g>
+          </svg>
         </div>
-        <div class="card">
-          <div class="card-num">04</div>
-          <div class="card-title">API &amp; Integration</div>
-          <div class="card-desc">Menghubungkan sistem yang terpisah, payment gateway, dan service pihak ketiga.</div>
-        </div>
+      </div>
+    </section>
+
+    <!-- Infinite Tech Ticker -->
+    <div class="marquee-container">
+      <div class="marquee-track" id="marquee">
+        <div class="tech-pill"><span class="tech-bullet"></span>TypeScript</div>
+        <div class="tech-pill"><span class="tech-bullet"></span>Go (Golang)</div>
+        <div class="tech-pill"><span class="tech-bullet"></span>Rust</div>
+        <div class="tech-pill"><span class="tech-bullet"></span>PostgreSQL</div>
+        <div class="tech-pill"><span class="tech-bullet"></span>Redis</div>
+        <div class="tech-pill"><span class="tech-bullet"></span>Docker</div>
+        <div class="tech-pill"><span class="tech-bullet"></span>Kubernetes</div>
+        <div class="tech-pill"><span class="tech-bullet"></span>Next.js</div>
+        <div class="tech-pill"><span class="tech-bullet"></span>Cloudflare Workers</div>
+        <div class="tech-pill"><span class="tech-bullet"></span>Apache Kafka</div>
+        <div class="tech-pill"><span class="tech-bullet"></span>GraphQL</div>
+        <div class="tech-pill"><span class="tech-bullet"></span>gRPC</div>
+        <!-- Repeat for seamless scroll -->
+        <div class="tech-pill"><span class="tech-bullet"></span>TypeScript</div>
+        <div class="tech-pill"><span class="tech-bullet"></span>Go (Golang)</div>
+        <div class="tech-pill"><span class="tech-bullet"></span>Rust</div>
+        <div class="tech-pill"><span class="tech-bullet"></span>PostgreSQL</div>
+        <div class="tech-pill"><span class="tech-bullet"></span>Redis</div>
+        <div class="tech-pill"><span class="tech-bullet"></span>Docker</div>
+        <div class="tech-pill"><span class="tech-bullet"></span>Kubernetes</div>
+        <div class="tech-pill"><span class="tech-bullet"></span>Next.js</div>
+        <div class="tech-pill"><span class="tech-bullet"></span>Cloudflare Workers</div>
+        <div class="tech-pill"><span class="tech-bullet"></span>Apache Kafka</div>
+        <div class="tech-pill"><span class="tech-bullet"></span>GraphQL</div>
+        <div class="tech-pill"><span class="tech-bullet"></span>gRPC</div>
       </div>
     </div>
 
-    <div class="cta">
-      <p>Punya proyek atau butuh konsultasi teknis?</p>
-      <a href="https://github.com/src-id" target="_blank">Hubungi Kami</a>
-    </div>
-  </main>
+    <!-- Capabilities / Services -->
+    <section id="capabilities">
+      <div class="section-header reveal">
+        <div class="section-eyebrow">Capabilities</div>
+        <h2 class="section-title">Built for resilience and scale.</h2>
+      </div>
 
-  <footer>
-    <span>&copy; 2026 SRC. Indonesia.</span>
-    <span><a href="https://github.com/src-id">github.com/src-id</a></span>
-  </footer>
+      <div class="cards-grid">
+        <div class="service-card reveal">
+          <div class="card-index">
+            <span>01 / ENGINEERING</span>
+            <span class="card-tag">PRODUCTION</span>
+          </div>
+          <h3>Custom Software Engineering</h3>
+          <p>
+            End-to-end delivery of high-throughput web applications, internal enterprise platforms, and automated workflow engines tailored to exact operational requirements.
+          </p>
+        </div>
+
+        <div class="service-card reveal">
+          <div class="card-index">
+            <span>02 / ADVISORY</span>
+            <span class="card-tag">STRATEGY</span>
+          </div>
+          <h3>Architecture &amp; Cloud Advisory</h3>
+          <p>
+            Rigorous technical evaluations, microservices decomposition, and strategic cloud migration roadmaps engineered to eliminate bottlenecks and optimize compute expenditure.
+          </p>
+        </div>
+
+        <div class="service-card reveal">
+          <div class="card-index">
+            <span>03 / DEVOPS</span>
+            <span class="card-tag">INFRASTRUCTURE</span>
+          </div>
+          <h3>Cloud &amp; DevOps Orchestration</h3>
+          <p>
+            Hardened CI/CD delivery pipelines, zero-downtime rolling deployments, automated telemetry, and Kubernetes infrastructure that runs predictably under load.
+          </p>
+        </div>
+
+        <div class="service-card reveal">
+          <div class="card-index">
+            <span>04 / INTEGRATIONS</span>
+            <span class="card-tag">CONNECTIVITY</span>
+          </div>
+          <h3>API Design &amp; Ecosystem Integration</h3>
+          <p>
+            High-availability REST &amp; gRPC services, payment processor gateways, webhooks, and secure bridges connecting legacy software to modern cloud stacks.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Standards & Principles -->
+    <section id="standards">
+      <div class="section-header reveal">
+        <div class="section-eyebrow">Standards</div>
+        <h2 class="section-title">Principles we do not compromise on.</h2>
+      </div>
+
+      <div class="principles-grid">
+        <div class="principle-item reveal">
+          <h4>// Simplicity First</h4>
+          <p>We believe the best code is the code you never had to write. Native standard libraries over bloated frameworks; clean patterns over clever hacks.</p>
+        </div>
+        <div class="principle-item reveal">
+          <h4>// Measurable Velocity</h4>
+          <p>Automated tests, deterministic build pipelines, and continuous verification. Every change is tracked, audited, and ship-ready.</p>
+        </div>
+        <div class="principle-item reveal">
+          <h4>// Production Durability</h4>
+          <p>Systems built with defensive validation at boundaries, clear telemetry, and graceful error handling that prevents catastrophic data loss.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section id="contact" class="reveal">
+      <div class="cta-banner">
+        <h2 class="cta-title">Have a project in mind?</h2>
+        <p class="cta-desc">
+          Whether you need a full-stack product team, high-level architecture audit, or dedicated consulting, let's discuss how we can build together.
+        </p>
+        <a href="https://github.com/src-id" target="_blank" class="btn-primary">
+          Connect on GitHub
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </a>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div>
+        <span>&copy; 2026 SRC (src-id). All rights reserved.</span>
+      </div>
+      <div class="footer-links">
+        <a href="https://src-id.github.io">Home</a>
+        <a href="https://github.com/src-id" target="_blank">GitHub</a>
+        <a href="https://github.com/src-id/assets" target="_blank">Brand Assets</a>
+        <a href="https://github.com/src-id/.github" target="_blank">Profile</a>
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- Interactive Background Canvas & Cursor Tracking Script -->
+  <script>
+    // 1. Dynamic Particle Mesh Canvas
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
+
+    window.addEventListener('resize', () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    });
+
+    const particles = [];
+    const particleCount = Math.min(Math.floor(window.innerWidth / 22), 60);
+
+    let mouse = { x: null, y: null, radius: 140 };
+
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = e.clientX;
+      mouse.y = e.clientY;
+    });
+
+    window.addEventListener('mouseout', () => {
+      mouse.x = null;
+      mouse.y = null;
+    });
+
+    class Particle {
+      constructor() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.vx = (Math.random() - 0.5) * 0.45;
+        this.vy = (Math.random() - 0.5) * 0.45;
+        this.radius = Math.random() * 1.5 + 0.8;
+      }
+
+      update() {
+        this.x += this.vx;
+        this.y += this.vy;
+
+        if (this.x < 0 || this.x > width) this.vx *= -1;
+        if (this.y < 0 || this.y > height) this.vy *= -1;
+
+        if (mouse.x != null && mouse.y != null) {
+          let dx = mouse.x - this.x;
+          let dy = mouse.y - this.y;
+          let distance = Math.sqrt(dx * dx + dy * dy);
+          if (distance < mouse.radius) {
+            const force = (mouse.radius - distance) / mouse.radius;
+            this.x -= (dx / distance) * force * 1.2;
+            this.y -= (dy / distance) * force * 1.2;
+          }
+        }
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Particle());
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+
+      // Draw particle connections
+      for (let a = 0; a < particles.length; a++) {
+        for (let b = a + 1; b < particles.length; b++) {
+          let dx = particles[a].x - particles[b].x;
+          let dy = particles[a].y - particles[b].y;
+          let distance = Math.sqrt(dx * dx + dy * dy);
+
+          if (distance < 110) {
+            let opacity = 1 - distance / 110;
+            ctx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.075})`;
+            ctx.lineWidth = 0.8;
+            ctx.beginPath();
+            ctx.moveTo(particles[a].x, particles[a].y);
+            ctx.lineTo(particles[b].x, particles[b].y);
+            ctx.stroke();
+          }
+        }
+      }
+
+      particles.forEach((p) => {
+        p.update();
+        p.draw();
+      });
+
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    // 2. Card Spotlight Border Tracking
+    document.querySelectorAll('.service-card').forEach((card) => {
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        card.style.setProperty('--mouse-x', `${x}px`);
+        card.style.setProperty('--mouse-y', `${y}px`);
+      });
+    });
+
+    // 3. Scroll Reveal Animations
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+          }
+        });
+      },
+      { threshold: 0.12 }
+    );
+
+    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+  </script>
 
 </body>
 </html>
