@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "wanforge-hub": {
+      "command": "node",
+      "args": [
+        "/home/wanforge/www/mcp-servers/dist/index.js"
+      ]
+    }
+  }
+}

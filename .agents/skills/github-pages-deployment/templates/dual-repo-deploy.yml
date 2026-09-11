@@ -1,0 +1,40 @@
+name: Deploy site to External Repo
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source
+        uses: actions/checkout@v4
+
+      # Install pnpm without version to respect packageManager field in package.json
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build site
+        run: pnpm run build
+        env:
+          NODE_ENV: production
+
+      - name: Deploy to External Public Repo
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          personal_token: ${{ secrets.API_TOKEN_GITHUB }}
+          external_repository: <org>/<public-target-repo>
+          publish_branch: gh-pages
+          publish_dir: ./dist
+          keep_files: false
